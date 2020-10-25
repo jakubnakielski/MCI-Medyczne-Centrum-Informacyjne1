@@ -1,0 +1,56 @@
+import React from 'react';
+import { Text, View } from 'react-native';
+import styled, { css } from 'styled-components';
+import { LinearGradient } from 'expo-linear-gradient';
+
+const Wrapper = styled(View)`
+    width: 90%;
+    min-height: 60px;
+    margin: 20px 0;
+    margin-right: auto;
+    align-items: center;
+    justify-content: center;
+    border-bottom-right-radius: 50px;
+    border-top-right-radius: 50px;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    background: grey;
+    padding: 20px;
+
+    ${({ isMyMessage }) => isMyMessage && css`
+        border-bottom-left-radius: 50px;
+        border-top-left-radius: 50px;
+        border-bottom-right-radius: 0;
+        border-top-right-radius: 0;
+        margin-right: 0;
+        margin-left: auto;
+        background: #6E5694;
+    `}
+`;
+const MessageContent = styled(Text)`
+    color: white;
+    font-size: 14px;
+`;
+const Author = styled(Text)`
+    position: absolute;
+    top: -22px;
+    left: 10px;
+    color: grey;
+`;
+
+const Message = ({ task, ...props }) => (
+
+    <Wrapper
+        as={LinearGradient}
+        colors={['#F5B346', '#FA7D8E']}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        {...props}
+    >
+        <Author>{task.user}</Author>
+        <MessageContent>{task.content}</MessageContent>
+    </Wrapper>
+
+);
+
+export default Message;

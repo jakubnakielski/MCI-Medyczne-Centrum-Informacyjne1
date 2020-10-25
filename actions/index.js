@@ -1,4 +1,5 @@
 import axios from 'axios';
+import io from 'socket.io-client';
 
 export const AUTH_REQUEST = 'AUTH_REQUEST';
 export const AUTH_SUCCESS = 'AUTH_SUCCESS';
@@ -9,6 +10,9 @@ export const LOGOUT_FAILURE = 'LOGOUT_FAILURE';
 export const REGISTER_REQUEST = 'REGISTER_REQUEST';
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 export const REGISTER_FAILURE = 'REGISTER_FAILURE';
+export const SEND_MESSAGE = 'SEND_MESSAGE';
+export const SEND_MESSAGE_SUCCESS = 'SEND_MESSAGE_SUCCESS';
+export const SEND_MESSAGE_FAILURE = 'SEND_MESSAGE_FAILURE';
 
 const ADDRESS = 'api.rdnt.pl';
 
@@ -64,5 +68,16 @@ export const logoutAction = () => {
                 console.log('LOGOUT_FAILURE', err);
             });
     }
+}
+
+export const sendMessageAction = () => {
+    // const socketConfig = io({
+    //     reconnection: true,
+    // });
+    // const socket = io.connect('http://io.rdnt.pl:5050');
+    // socket.on('message', message => {
+    //     console.log(message);
+    //   });
+    // socket.emit('message', 'znowu sie rozladował')
 }
 

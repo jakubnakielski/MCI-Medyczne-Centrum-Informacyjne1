@@ -1,20 +1,17 @@
 import React from 'react';
 import { StatusBar } from 'react-native';
-import { Provider } from 'react-redux';
-import store from './store';
-import { NavigationContainer } from '@react-navigation/native';
 import TabNavigator from './Navigators/TabNavigator';
+import MainTemplate from './components/templates/MainTemplate';
 
 const App = () => (
-  <Provider store={store}>
-    <NavigationContainer>
-      <StatusBar
-        backgroundColor='#fff'
-        barStyle="dark-content"
-      />
-      <TabNavigator />
-    </NavigationContainer >
-  </Provider>
+  <MainTemplate>
+    <StatusBar
+      backgroundColor='#F0F2F5'
+      barStyle="dark-content"
+    />
+    <TabNavigator />
+  </MainTemplate>
+
 );
 
 export default App;

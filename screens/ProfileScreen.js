@@ -3,6 +3,7 @@ import { Text, View, SafeAreaView, TextInput, Keyboard, Platform, Animated } fro
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import styled from 'styled-components';
 import store from '../store';
+import io from 'socket.io-client';
 import scaleTransform from '../utils/scaleTransform';
 import { animateImage, animateUpgradeButton, animateLevelIndicator, animateBgOpacity } from '../animations';
 import * as Animatable from 'react-native-animatable';
@@ -74,16 +75,13 @@ const Content = styled(View)`
   align-items: center;
 `;
 
+let socket;
+
 const ProfileScreen = () => {
   const inputRef = useRef(null);
   const [currentDescription, setDescription] = useState('something');
   const [inputContent, setInputContent] = useState('');
   const [level, setLevel] = useState(1);
-
-  const imageAnim = useRef(new Animated.Value(1.0)); // żeby za każdym razem nie tworzyć nowej instancji lepiej użyć useRef(), albo stworzyć class
-  const upgradeAnim = useRef(new Animated.Value(1.0));
-  const upgradeButtonAnim = useRef(new Animated.Value(0.0));
-  // const backgroundAnim = useRef(new Animated.Value(0.0));
 
   /*
   const userID = store.getState().userID;
@@ -92,8 +90,16 @@ const ProfileScreen = () => {
     return <Text>NIE JESTEŚ ZALOGOWANY!</Text>
   }*/ // to musi być w UseFocusEffect w class Component
 
-
   useEffect(() => {
+
+    const socketConfig = io({
+      reconnection: true,
+    });
+    socket = io.connect('http://io.rdnt.pl:5050');
+    // socket.on('message', message => {
+    //   console.log(111, message);
+    // });
+    console.log('connected!');
 
     AsyncStorage.getItem('DESCRIPTION')
       .then((value) => {
@@ -101,21 +107,8 @@ const ProfileScreen = () => {
       })
     AsyncStorage.getItem('LEVEL')
       .then((value) => setLevel(parseInt(value)))
+
   }, []);
-
-  const handleEffect = useCallback(() => animateImage(imageAnim.current), []);
-  useFocusEffect(() => handleEffect);
-  // useEffect(() => animateUpgradeButton(upgradeButtonAnim.current), []);
-  // useEffect(() => animateBgOpacity(backgroundAnim.current), []);
-
-  const upgradeButtomScale = upgradeButtonAnim.current.interpolate({
-    inputRange: [0, 1],
-    outputRange: [1.0, 1.2],
-  });
-  // const containerBgOpacity = backgroundAnim.current.interpolate({
-  //   inputRange: [0, 1],
-  //   outputRange: [0.7, 1],
-  // });
 
   const handlePress = () => {
     inputRef.current.focus();
@@ -133,69 +126,52 @@ const ProfileScreen = () => {
     setInputContent(text)
   }
   const levelUp = () => {
-    setLevel(parseInt(level) + 1);
-    animateLevelIndicator(upgradeAnim.current);
 
-    AsyncStorage.setItem('LEVEL', String(level + 1));
-  }
+    socket.emit('upgrade', 'znowu sie rozladował')
 
-  const fadeOut = {
-    0: {
-      opacity: 0,
-    },
-    1: {
-      opacity: 1,
-    },
+    // console.log('emitted33333!')
+    // setLevel(parseInt(level) + 1);
+    // AsyncStorage.setItem('LEVEL', String(level + 1));
   }
 
   return (
-    <ProfileTemplate>
-      <Container>
-        <Background
-          animation={fadeOut}
-          iterationCount='infinite'
-          direction='alternate'
-          duration={2000}
-          useNativeDriver={true}
-        />
-        <Content>
-          <ImageWrapper>
-            <StyledImage
-              source={profileImage}
-              style={scaleTransform(imageAnim.current)}
-            />
-            <LeverIndicator style={scaleTransform(upgradeAnim.current)}>
-              <LevelIndicatorText>{level}</LevelIndicatorText>
-            </LeverIndicator>
-          </ImageWrapper>
-
-          <View>
-            <NameText>Jan Nowak</NameText>
-            <DescriptionText>{currentDescription}</DescriptionText>
-          </View>
-
-          <ButtonsWrapper>
-            <Button onPress={handlePress}>Focus</Button>
-            <Animatable.View animation='shake' iterationCount='infinite'>
-              <Button onPress={levelUp} style={scaleTransform(upgradeButtomScale)}> Upgrade</Button>
-            </Animatable.View>
-          </ButtonsWrapper>
-        </Content>
-
-        <SetDescriptionWrapper>
-          <DescriptionInput
-            ref={inputRef}
-            placeholder={'Type ...'}
-            value={inputContent}
-            onChangeText={handleInputChange}
-            onSubmitEditing={changeDescription}
+    <Container>
+      <Content>
+        <ImageWrapper>
+          <StyledImage
+            source={profileImage}
           />
+          <LeverIndicator>
+            <LevelIndicatorText>{level}</LevelIndicatorText>
+          </LeverIndicator>
+        </ImageWrapper>
 
-          <Button onPress={changeDescription} set>SET</Button>
+        <View>
+          <NameText>Jan Nowak</NameText>
+          <DescriptionText>{currentDescription}</DescriptionText>
+        </View>
 
-        </SetDescriptionWrapper>
-      </Container>
-    </ProfileTemplate>
+        <ButtonsWrapper>
+          <Button onPress={handlePress}>Focus</Button>
+          {/* <Animatable.View animation='shake' iterationCount='infinite'> */}
+          <Button onPress={levelUp}>Upgrade</Button>
+          {/* </Animatable.View> */}
+        </ButtonsWrapper>
+      </Content>
+
+      <SetDescriptionWrapper>
+        <DescriptionInput
+          ref={inputRef}
+          placeholder={'Type ...'}
+          value={inputContent}
+          onChangeText={handleInputChange}
+          onSubmitEditing={() => changeDescription}
+        />
+
+        <Button onPress={changeDescription} set>SET</Button>
+
+      </SetDescriptionWrapper>
+    </Container>
   )
 };
 
