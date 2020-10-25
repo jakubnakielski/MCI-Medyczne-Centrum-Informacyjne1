@@ -14,8 +14,9 @@ const Wrapper = styled(View)`
     border-top-right-radius: 50px;
     border-bottom-left-radius: 0;
     border-top-left-radius: 0;
-    background: grey;
+    background: grey !important;
     padding: 20px;
+    elevation: 3;
 
     ${({ isMyMessage }) => isMyMessage && css`
         border-bottom-left-radius: 50px;

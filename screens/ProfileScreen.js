@@ -1,28 +1,15 @@
-import React, { useRef, useState, useEffect, useCallback } from 'react';
-import { Text, View, SafeAreaView, TextInput, Keyboard, Platform, Animated } from 'react-native';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import React, { useRef, useState, useEffect } from 'react';
+import { Text, View, SafeAreaView, TextInput, Keyboard, Animated } from 'react-native';
 import styled from 'styled-components';
 import store from '../store';
 import io from 'socket.io-client';
-import scaleTransform from '../utils/scaleTransform';
-import { animateImage, animateUpgradeButton, animateLevelIndicator, animateBgOpacity } from '../animations';
-import * as Animatable from 'react-native-animatable';
 import AsyncStorage from '@react-native-community/async-storage';
-import ProfileTemplate from '../components/templates/ProfileTemplate.android';
-import Button from '../components/atoms/Button/Button';
+import Button from '../components/atoms/Button';
 const profileImage = require('../assets/favicon.png');
 
 const Container = styled(SafeAreaView)`
   width: 100%;
   height: 100%;
-`;
-const Background = styled(Animatable.View)`
-  background-color: rgba(255,0,0,0.3);
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
 `;
 const StyledImage = styled(Animated.Image)`
   width: 100px;
@@ -83,12 +70,6 @@ const ProfileScreen = () => {
   const [inputContent, setInputContent] = useState('');
   const [level, setLevel] = useState(1);
 
-  /*
-  const userID = store.getState().userID;
-  console.log(111, userID);
-  if (!userID) {
-    return <Text>NIE JESTEŚ ZALOGOWANY!</Text>
-  }*/ // to musi być w UseFocusEffect w class Component
 
   useEffect(() => {
 
@@ -99,8 +80,6 @@ const ProfileScreen = () => {
     // socket.on('message', message => {
     //   console.log(111, message);
     // });
-    console.log('connected!');
-
     AsyncStorage.getItem('DESCRIPTION')
       .then((value) => {
         if (value) setDescription(value);
@@ -126,10 +105,6 @@ const ProfileScreen = () => {
     setInputContent(text)
   }
   const levelUp = () => {
-
-    socket.emit('upgrade', 'znowu sie rozladował')
-
-    // console.log('emitted33333!')
     // setLevel(parseInt(level) + 1);
     // AsyncStorage.setItem('LEVEL', String(level + 1));
   }
@@ -153,9 +128,7 @@ const ProfileScreen = () => {
 
         <ButtonsWrapper>
           <Button onPress={handlePress}>Focus</Button>
-          {/* <Animatable.View animation='shake' iterationCount='infinite'> */}
           <Button onPress={levelUp}>Upgrade</Button>
-          {/* </Animatable.View> */}
         </ButtonsWrapper>
       </Content>
 

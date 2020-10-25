@@ -5,9 +5,8 @@ import { connect } from 'react-redux';
 import { authenticateAction, logoutAction } from '../actions';
 import styled from 'styled-components';
 import { Formik } from 'formik';
-import Input from '../components/atoms/Input/Input';
-import Button from '../components/atoms/Button/Button';
-const spinLoader = require('../animations/lottie/spinLoader.json');
+import Input from '../components/atoms/Input';
+import Button from '../components/atoms/Button';
 
 const Wrapper = styled(SafeAreaView)`
     width: 100%;
@@ -51,10 +50,6 @@ const LoginScreen = ({ authenticate, logout }) => {
                 }}
             >
                 {({ values, handleChange, handleSubmit }) => {
-                    // if (userID) {
-                    //     navigate('Profile');
-                    // }
-
                     return (
                         <StyledView>
                             <LoginText>Logowanie</LoginText>

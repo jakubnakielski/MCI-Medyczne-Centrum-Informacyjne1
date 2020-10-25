@@ -22,6 +22,7 @@ const rootReducer = (state = initialState, action) => {
                 ...state,
                 isLoading: false,
                 userID: action.payload.data._id,
+                username: action.payload.data.username,
             }
         case AUTH_FAILURE:
             return {
@@ -41,6 +42,7 @@ const rootReducer = (state = initialState, action) => {
                 ...state,
                 isLoading: false,
                 userID: null,
+                username: null,
             }
         case LOGOUT_FAILURE:
             return {

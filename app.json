@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "TestProject",
-    "slug": "TestProject123",
+    "name": "MCI",
+    "slug": "MedyczneCentrumInformacyjne",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/logo.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -20,10 +20,10 @@
       "supportsTablet": true
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/logo.png"
     },
     "android": {
-      "package": "com.jakubnakielski.TestProject123"
+      "package": "com.jakubnakielski.MedyczneCentrumInformacyjne"
     }
   }
 }

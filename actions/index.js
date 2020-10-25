@@ -78,6 +78,6 @@ export const sendMessageAction = () => {
     // socket.on('message', message => {
     //     console.log(message);
     //   });
-    // socket.emit('message', 'znowu sie rozladował')
+    // socket.emit('message', 'laduje')
 }
 

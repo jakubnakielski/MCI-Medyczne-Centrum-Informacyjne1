@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack'
-import TodoList from '../../screens/TodoList';
+import ChatScreen from '../../screens/ChatScreen';
 import DetailsScreen from '../../screens/DetailsScreen';
 
 const Stack = createStackNavigator();
@@ -14,7 +14,7 @@ const StackNavigator = () => (
     >
         <Stack.Screen
             name='List'
-            component={TodoList}
+            component={ChatScreen}
             options={{
                 headerTitle: 'Main Page',
             }}

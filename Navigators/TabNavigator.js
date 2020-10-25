@@ -1,12 +1,10 @@
 import React from 'react';
-import {View, Text } from 'react-native';
+import { View, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import styled from 'styled-components'
 import ProfileScreen from '../screens/ProfileScreen';
-import LoginScreen from '../screens/LoginScreen';
 import ListStackNavigator from './List/StackNavigator';
 import LoginStackNavigator from './Login/StackNavigator';
-import LottieScreen from '../screens/LottieScreen';
 
 const TabIcon = styled(View)`
   width: 20px;
@@ -26,7 +24,6 @@ const TabNavigator = () => (
         <Tab.Screen name='List' component={ListStackNavigator} />
         <Tab.Screen name='Profile' component={ProfileScreen} />
         <Tab.Screen name='Login' component={LoginStackNavigator} />
-        {/* <Tab.Screen name='Lottie' component={LottieScreen} /> */}
     </Tab.Navigator >
 );
 

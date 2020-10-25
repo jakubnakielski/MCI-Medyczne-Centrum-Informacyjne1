@@ -1,51 +1,36 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Text, View, TouchableOpacity, Keyboard, Animated, KeyboardAvoidingView, Image, TouchableWithoutFeedback, SafeAreaView } from 'react-native';
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import React, { useCallback, useState, useEffect } from 'react';
+import { Text, View, TouchableOpacity, Animated, KeyboardAvoidingView, Image, } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import styled from 'styled-components';
 import io from 'socket.io-client';
 import store from '../store';
 import { LinearGradient } from 'expo-linear-gradient';
-import AsyncStorage from '@react-native-community/async-storage';
-import scaleTransform from '../utils/scaleTransform';
-import Message from '../components/atoms/Message/Message';
-import Input from '../components/atoms/Input/Input';
-import Heading from '../components/atoms/Heading/Heading';
+import Message from '../components/atoms/Message';
+import Input from '../components/atoms/Input';
+import Header from '../components/molecules/Header';
 const sendIconImage = require('../assets/sendIcon.png');
-const arrowLeftImage = require('../assets/arrowLeft.png');
-const avatarImage = require('../assets/avatar.png');
 
 const StyledView = styled(View)`
     background-color: #F0F2F5;
 `;
 const Container = styled(KeyboardAvoidingView)`
         width: 100%;
+        elevation: 50;
         height: 84%;
         overflow: hidden;
         background: #fff;
         border-top-left-radius: 40px;
         border-top-right-radius: 40px;
 `;
-const AnimatedAddTaskButton = Animated.createAnimatedComponent(TouchableOpacity);
-const AddTaskButton = styled(AnimatedAddTaskButton)`
-    background: #009688;
-    width: 100%;
-    height: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    elevation: 10;
-`;
-const AddTaskButtonText = styled(Text)`
-    color: white;
-`;
+
 const MessageList = styled(Animated.FlatList)`
-    margin-top: 20px;
     display: flex;
     flex-direction: column;
 `;
 const InputWrapper = styled(View)`
     width: 90%;
     height: 60px;
+    elevation: 70;
     margin: 0 auto;
     border-radius: 50px;
     display: flex;
@@ -66,23 +51,42 @@ const StyledTouchableOpacity = styled(TouchableOpacity)`
     justify-content: center;
     align-items: center;
 `;
-const Header = styled(View)`
-    width: 100%;
-    height: 16%;
-    background: #F0F2F5;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px;
-`;
+
+/*
+  const userID = store.getState().userID;
+  console.log(111, userID);
+  if (!userID) {
+    return <Text>NIE JESTEŚ ZALOGOWANY!</Text>
+  }*/ // to musi być w UseFocusEffect w class Component
+
 
 let socket;
+
+// class TodoList extends React.Component {
+// state = {
+//     tasks: [],
+//  inputContent: '',
+// }
+
+setTasks = (task) => {
+    this.setState((prevState) => ({
+        ...tasks, task
+    }));
+}
+
+
+
+//     render() {
+//         return (
+
+//         )
+//     }
+// }
+
 const TodoList = () => {
     const [tasks, setTasks] = useState([]);
     const [inputContent, setInputContent] = useState('');
     const [isTyping, setIsTyping] = useState(false);
-    const { navigate } = useNavigation();
 
     useEffect(() => {
         const socketConfig = io({
@@ -91,42 +95,39 @@ const TodoList = () => {
         socket = io.connect('http://io.rdnt.pl:5050');
     }, [])
 
-    useFocusEffect(() => {
-        const userID = store.getState().userID || null;
-        console.log(userID);
-        // socket.emit('chat', userID);
-    });
+
+    useFocusEffect(
+        useCallback(() => {
+            const userID = store.getState().userID || 'niezalogowany';
+            console.log(userID);
+            // socket.emit('add', userID);
+        }, [])
+    );
 
     useEffect(() => {
-        socket.on('chat', message => {
-            console.log(111, message);
-            setTasks([{ user: 'Andrzej', content: message }, ...tasks]);
+        socket.on('chat', ({ message, username }) => {
+            setTasks([{ user: username, content: message }, ...tasks]);
         });
 
     }, [tasks]);
 
     const addTask = () => {
-        Keyboard.dismiss();
+        // Keyboard.dismiss();
         if (inputContent === '') return;
 
-        setTasks([{ user: 'Ja', content: inputContent }, ...tasks]);
+        setTasks([{ user: 'Jakub', content: inputContent }, ...tasks]);
         setInputContent('');
-        socket.emit('chat', inputContent);
+
+        const username = store.getState().username || 'niezalogowany';
+        socket.emit('chat', {
+            message: inputContent,
+            username: username,
+        });
     }
 
     return (
         <StyledView>
-            <Header>
-                <Image
-                    source={arrowLeftImage}
-                    style={{ width: 22, height: 22, opacity: 0.4 }}
-                />
-                <Heading>Antonia Berger</Heading>
-                <Image
-                    source={avatarImage}
-                    style={{ width: 40, height: 40 }}
-                />
-            </Header>
+            <Header>Konsultant Jan</Header>
             <Container behavior='padding'>
                 <MessageList
                     data={tasks}
@@ -136,7 +137,7 @@ const TodoList = () => {
                             <Message
                                 message={item}
                                 key={index}
-                                isMyMessage={item.user === "Ja" ? true : false}
+                                isMyMessage={item.user === "Jakub" ? true : false}
                             />
                         )
                     }}
@@ -153,9 +154,12 @@ const TodoList = () => {
                     <StyledInput
                         placeholder='Napisz wiadomość...'
                         placeholderTextColor="#FFF"
+                        multiline={true}
                         value={inputContent}
-                        onChangeText={setInputContent}
-                        onSubmitEditing={(event) => addTask(event.nativeEvent.text)}
+                        onChangeText={(text) => setInputContent(text)}
+                    // keyboardType='default'
+                    // returnKeyType='none'
+                    // onSubmitEditing={(event) => addTask(event.nativeEvent.text)}
                     />
                     <StyledTouchableOpacity onPress={addTask}>
                         <Image
@@ -163,18 +167,7 @@ const TodoList = () => {
                             style={{ width: 20, height: 20 }}
                         />
                     </StyledTouchableOpacity>
-                    {/* <AddTaskButton
-                        activeOpacity={0.7}
-                        delayPressIn={0}
-                        style={scaleTransform(addTaskScale)}
-
-                    >
-                        <AddTaskButtonText>
-                            Wyślij
-                    </AddTaskButtonText>
-                    </AddTaskButton> */}
                 </InputWrapper>
-
             </Container>
         </StyledView>
     )
@@ -182,3 +175,15 @@ const TodoList = () => {
 
 export default TodoList;
 
+
+
+/* <AddTaskButton
+    activeOpacity={0.7}
+    delayPressIn={0}
+    style={scaleTransform(addTaskScale)}
+
+>
+    <AddTaskButtonText>
+        Wyślij
+</AddTaskButtonText>
+</AddTaskButton> */
