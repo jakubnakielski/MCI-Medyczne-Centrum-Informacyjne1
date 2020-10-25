@@ -7,6 +7,8 @@ import styled from 'styled-components';
 import { Formik } from 'formik';
 import Input from '../components/atoms/Input';
 import Button from '../components/atoms/Button';
+import ChatScreen from './ChatScreen';
+import TabNavigator from '../Navigators/TabNavigator';
 
 const Wrapper = styled(SafeAreaView)`
     width: 100%;
@@ -37,7 +39,7 @@ const ButtonsWrapper = styled(View)`
     width: 225px;
 `;
 
-const LoginScreen = ({ authenticate, logout }) => {
+const LoginScreen = ({ authenticate, logout, userID }) => {
     const { navigate } = useNavigation();
 
     return (
@@ -50,6 +52,12 @@ const LoginScreen = ({ authenticate, logout }) => {
                 }}
             >
                 {({ values, handleChange, handleSubmit }) => {
+
+                    if (userID) {
+                        // navigate('Chat');
+                        return <TabNavigator />
+                    }
+
                     return (
                         <StyledView>
                             <LoginText>Logowanie</LoginText>

@@ -59,68 +59,68 @@ const StyledTouchableOpacity = styled(TouchableOpacity)`
   }*/ // to musi być w UseFocusEffect w class Component
 
 
-// class TodoList extends React.Component {
-//     state = {
-//         messages: [],
-//         inputContent: '',
-//         isTyping: false
-//     }
+class ChatScreen extends React.Component {
+    state = {
+        messages: [],
+        inputContent: '',
+        isTyping: false
+    }
 
-//     setMessages = (task) => {
-//         this.setState((prevState) => ({
-//             ...messages, task
-//         }));
-//     }
+    setMessages = (task) => {
+        this.setState((prevState) => ({
+            ...messages, task
+        }));
+    }
 
-//     render() {
-//         return (
-//             <StyledView>
-//                 <Header>MOPS Helpdesk</Header>
-//                 <Container behavior='padding'>
-//                     <MessageList
-//                         data={messages}
-//                         keyExtractor={(item, index) => index.toString()}
-//                         renderItem={({ item, index }) => {
-//                             return (
-//                                 <Message
-//                                     message={item}
-//                                     key={index}
-//                                     isMyMessage={item.user === "Jakub" ? true : false}
-//                                 />
-//                             )
-//                         }}
-//                         inverted
-//                         keyboardShouldPersistTaps={'always'}
-//                     />
+    render() {
+        return (
+            <StyledView>
+                <Header>MOPS Helpdesk</Header>
+                <Container behavior='padding'>
+                    <MessageList
+                        data={messages}
+                        keyExtractor={(item, index) => index.toString()}
+                        renderItem={({ item, index }) => {
+                            return (
+                                <Message
+                                    message={item}
+                                    key={index}
+                                    isMyMessage={item.user === "Jakub" ? true : false}
+                                />
+                            )
+                        }}
+                        inverted
+                        keyboardShouldPersistTaps={'always'}
+                    />
 
-//                     <InputWrapper
-//                         as={LinearGradient}
-//                         colors={['#F5B346', '#FA7D8E']}
-//                         start={{ x: 0, y: 0 }}
-//                         end={{ x: 1, y: 1 }}
-//                     >
-//                         <StyledInput
-//                             placeholder='Napisz wiadomość...'
-//                             placeholderTextColor="#FFF"
-//                             multiline={true}
-//                             value={inputContent}
-//                             onChangeText={(text) => setInputContent(text)}
-//                         // keyboardType='default'
-//                         // returnKeyType='none'
-//                         // onSubmitEditing={(event) => addTask(event.nativeEvent.text)}
-//                         />
-//                         <StyledTouchableOpacity onPress={addTask}>
-//                             <Image
-//                                 source={sendIconImage}
-//                                 style={{ width: 20, height: 20 }}
-//                             />
-//                         </StyledTouchableOpacity>
-//                     </InputWrapper>
-//                 </Container>
-//             </StyledView>
-//         )
-//     }
-// }
+                    <InputWrapper
+                        as={LinearGradient}
+                        colors={['#F5B346', '#FA7D8E']}
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 1, y: 1 }}
+                    >
+                        <StyledInput
+                            placeholder='Napisz wiadomość...'
+                            placeholderTextColor="#FFF"
+                            multiline={true}
+                            value={inputContent}
+                            onChangeText={(text) => setInputContent(text)}
+                            // keyboardType='default'
+                            // returnKeyType='none'
+                            // onSubmitEditing={(event) => addTask(event.nativeEvent.text)}
+                        />
+                        <StyledTouchableOpacity onPress={addTask}>
+                            <Image
+                                source={sendIconImage}
+                                style={{ width: 20, height: 20 }}
+                            />
+                        </StyledTouchableOpacity>
+                    </InputWrapper>
+                </Container>
+            </StyledView>
+        )
+    }
+}
 let socket;
 
 const ChatScreen = () => {
@@ -128,13 +128,14 @@ const ChatScreen = () => {
     const [inputContent, setInputContent] = useState('');
     const userID = store.getState().userID;
     const username = store.getState().username;
-    const { navigate } = useNavigation();
+    // const { navigate } = useNavigation();
 
     useEffect(() => {
         const socketConfig = io({
             reconnection: true,
         });
         socket = io.connect('http://io.rdnt.pl:5050');
+
     }, [])
 
     useFocusEffect(

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 const StyledText = styled(Text)`
     color: black;
-    font-size: 30px;
+    font-size: 22px;
     text-align: center;
 `;
 

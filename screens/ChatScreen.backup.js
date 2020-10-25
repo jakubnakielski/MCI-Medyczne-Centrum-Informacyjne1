@@ -22,7 +22,6 @@ const Container = styled(KeyboardAvoidingView)`
         border-top-left-radius: 40px;
         border-top-right-radius: 40px;
 `;
-
 const MessageList = styled(Animated.FlatList)`
     display: flex;
     flex-direction: column;

@@ -1,10 +1,12 @@
 import React from 'react';
 import { Image, View, TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
+import { logoutAction } from '../../actions';
 import styled from 'styled-components';
 import { useNavigation } from '@react-navigation/native';
 import Heading from '../atoms/Heading';
-const arrowLeftImage = require('../../assets/arrowLeft.png');
 const avatarImage = require('../../assets/avatar.png');
+const signOutIcon = require('../../assets/signOutIcon.png');
 
 const Wrapper = styled(View)`
     width: 100%;
@@ -16,16 +18,27 @@ const Wrapper = styled(View)`
     justify-content: space-between;
     padding: 20px;
 `;
+const StyledImage = styled(Image)`
+    transform: rotate(180deg);
+    width: 22px;
+    height: 22px;
+    opacity: 0.4;
+`;
 
-const Header = ({ children }) => {
+const Header = ({ children, logout }) => {
     const { navigate } = useNavigation();
 
     return (
         <Wrapper>
-            <Image
-                source={arrowLeftImage}
-                style={{ width: 22, height: 22, opacity: 0.4 }}
-            />
+            <TouchableOpacity onPress={()=> {
+                logout();
+                navigate('Login')
+            }}>
+                <StyledImage
+                    source={signOutIcon}
+                />
+            </TouchableOpacity>
+
             <Heading>{children}</Heading>
             <TouchableOpacity onPress={() => navigate('Login')}>
                 <Image
@@ -38,4 +51,8 @@ const Header = ({ children }) => {
     )
 };
 
-export default Header;
+const mapDispatchToProps = (dispatch) => ({
+    logout: () => dispatch(logoutAction()),
+});
+
+export default connect(null, mapDispatchToProps)(Header);
