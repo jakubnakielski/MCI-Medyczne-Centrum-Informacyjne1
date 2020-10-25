@@ -52,41 +52,11 @@ const StyledTouchableOpacity = styled(TouchableOpacity)`
     align-items: center;
 `;
 
-/*
-  const userID = store.getState().userID;
-  console.log(111, userID);
-  if (!userID) {
-    return <Text>NIE JESTEŚ ZALOGOWANY!</Text>
-  }*/ // to musi być w UseFocusEffect w class Component
-
-
 let socket;
-
-// class TodoList extends React.Component {
-// state = {
-//     tasks: [],
-//  inputContent: '',
-// }
-
-setTasks = (task) => {
-    this.setState((prevState) => ({
-        ...tasks, task
-    }));
-}
-
-
-
-//     render() {
-//         return (
-
-//         )
-//     }
-// }
 
 const TodoList = () => {
     const [tasks, setTasks] = useState([]);
     const [inputContent, setInputContent] = useState('');
-    const [isTyping, setIsTyping] = useState(false);
 
     useEffect(() => {
         const socketConfig = io({
@@ -94,7 +64,6 @@ const TodoList = () => {
         });
         socket = io.connect('http://io.rdnt.pl:5050');
     }, [])
-
 
     useFocusEffect(
         useCallback(() => {

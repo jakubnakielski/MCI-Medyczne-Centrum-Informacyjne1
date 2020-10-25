@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, View } from 'react-native';
+import store from '../../store';
 import styled, { css } from 'styled-components';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -38,19 +39,22 @@ const Author = styled(Text)`
     left: 10px;
     color: grey;
 `;
+const Message = ({ message, ...props }) => {
+    const username = store.getState().username;
 
-const Message = ({ message, ...props }) => (
-    <Wrapper
-        as={LinearGradient}
-        colors={['#F5B346', '#FA7D8E']}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        {...props}
-    >
-        <Author>{message.user}</Author>
-        <MessageContent>{message.content}</MessageContent>
-    </Wrapper>
+    return (
+        <Wrapper
+            as={LinearGradient}
+            colors={['#F5B346', '#FA7D8E']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            {...props}
+        >
+            <Author>{username}</Author>
+            <MessageContent>{message.content}</MessageContent>
+        </Wrapper>
 
-);
+    )
+};
 
 export default Message;

@@ -63,64 +63,64 @@ const StyledTouchableOpacity = styled(TouchableOpacity)`
 let socket;
 
 // class TodoList extends React.Component {
-// state = {
-//     tasks: [],
-//  inputContent: '',
-// isTyping: false
-// }
+//     state = {
+//         tasks: [],
+//         inputContent: '',
+//         isTyping: false
+//     }
 
-// setTasks = (task) => {
-//     this.setState((prevState) => ({
-//         ...tasks, task
-//     }));
-// }
+//     setTasks = (task) => {
+//         this.setState((prevState) => ({
+//             ...tasks, task
+//         }));
+//     }
 
 //     render() {
 //         return (
-{/* <StyledView>
-    <Header>MOPS Helpdesk</Header>
-    <Container behavior='padding'>
-        <MessageList
-            data={tasks}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={({ item, index }) => {
-                return (
-                    <Message
-                        message={item}
-                        key={index}
-                        isMyMessage={item.user === "Jakub" ? true : false}
-                    />
-                )
-            }}
-            inverted
-            keyboardShouldPersistTaps={'always'}
-        />
+//             <StyledView>
+//                 <Header>MOPS Helpdesk</Header>
+//                 <Container behavior='padding'>
+//                     <MessageList
+//                         data={tasks}
+//                         keyExtractor={(item, index) => index.toString()}
+//                         renderItem={({ item, index }) => {
+//                             return (
+//                                 <Message
+//                                     message={item}
+//                                     key={index}
+//                                     isMyMessage={item.user === "Jakub" ? true : false}
+//                                 />
+//                             )
+//                         }}
+//                         inverted
+//                         keyboardShouldPersistTaps={'always'}
+//                     />
 
-        <InputWrapper
-            as={LinearGradient}
-            colors={['#F5B346', '#FA7D8E']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-        >
-            <StyledInput
-                placeholder='Napisz wiadomość...'
-                placeholderTextColor="#FFF"
-                multiline={true}
-                value={inputContent}
-                onChangeText={(text) => setInputContent(text)}
-            // keyboardType='default'
-            // returnKeyType='none'
-            // onSubmitEditing={(event) => addTask(event.nativeEvent.text)}
-            />
-            <StyledTouchableOpacity onPress={addTask}>
-                <Image
-                    source={sendIconImage}
-                    style={{ width: 20, height: 20 }}
-                />
-            </StyledTouchableOpacity>
-        </InputWrapper>
-    </Container>
-</StyledView> */}
+//                     <InputWrapper
+//                         as={LinearGradient}
+//                         colors={['#F5B346', '#FA7D8E']}
+//                         start={{ x: 0, y: 0 }}
+//                         end={{ x: 1, y: 1 }}
+//                     >
+//                         <StyledInput
+//                             placeholder='Napisz wiadomość...'
+//                             placeholderTextColor="#FFF"
+//                             multiline={true}
+//                             value={inputContent}
+//                             onChangeText={(text) => setInputContent(text)}
+//                         // keyboardType='default'
+//                         // returnKeyType='none'
+//                         // onSubmitEditing={(event) => addTask(event.nativeEvent.text)}
+//                         />
+//                         <StyledTouchableOpacity onPress={addTask}>
+//                             <Image
+//                                 source={sendIconImage}
+//                                 style={{ width: 20, height: 20 }}
+//                             />
+//                         </StyledTouchableOpacity>
+//                     </InputWrapper>
+//                 </Container>
+//             </StyledView>
 //         )
 //     }
 // }
@@ -134,16 +134,33 @@ const TodoList = () => {
             reconnection: true,
         });
         socket = io.connect('http://io.rdnt.pl:5050');
+
     }, [])
 
+    // useFocusEffect(
+    //     useCallback(() => {
+    //         const username = store.getState().username || 'brak username';
+    //         console.log(username);
+    //         socket.emit('welcome', username);
+    //         console.log('USE FOCUS EFFECT111!')
+    //     }, [])
+    // );
 
-    useFocusEffect(
+    useEffect(
         useCallback(() => {
-            const userID = store.getState().userID || 'niezalogowany';
-            console.log(userID);
-            // socket.emit('add', userID);
-        }, [])
+            const username = store.getState().username || 'brak username';
+            console.log(username);
+            socket.emit('welcome', username);
+            console.log('USE FOCUS EFFECT111!')
+        }, []), []
     );
+    // useCallback(() => {
+    // const username = store.getState().username || 'brak username';
+    // console.log(username);
+    // socket.emit('welcome', username);
+    // console.log('USE FOCUS EFFECT111!')
+    // }, [])
+
 
     useEffect(() => {
         socket.on('chat', ({ message, username }) => {
@@ -159,7 +176,7 @@ const TodoList = () => {
         setTasks([{ user: 'Jakub', content: inputContent }, ...tasks]);
         setInputContent('');
 
-        const username = store.getState().username || 'niezalogowany';
+        const username = store.getState().username || 'brak username';
         socket.emit('chat', {
             message: inputContent,
             username: username,
@@ -169,7 +186,7 @@ const TodoList = () => {
     return (
         <StyledView>
             <Header>MOPS Helpdesk</Header>
-            <Container behavior='padding'>
+            <Container>
                 <MessageList
                     data={tasks}
                     keyExtractor={(item, index) => index.toString()}
@@ -193,6 +210,7 @@ const TodoList = () => {
                     end={{ x: 1, y: 1 }}
                 >
                     <StyledInput
+
                         placeholder='Napisz wiadomość...'
                         placeholderTextColor="#FFF"
                         multiline={true}
@@ -210,6 +228,9 @@ const TodoList = () => {
                     </StyledTouchableOpacity>
                 </InputWrapper>
             </Container>
+
+
+
         </StyledView>
     )
 };

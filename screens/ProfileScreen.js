@@ -5,7 +5,6 @@ import store from '../store';
 import io from 'socket.io-client';
 import AsyncStorage from '@react-native-community/async-storage';
 import Button from '../components/atoms/Button';
-const profileImage = require('../assets/favicon.png');
 
 const Container = styled(SafeAreaView)`
   width: 100%;
@@ -114,7 +113,7 @@ const ProfileScreen = () => {
       <Content>
         <ImageWrapper>
           <StyledImage
-            source={profileImage}
+            // source={profileImage}
           />
           <LeverIndicator>
             <LevelIndicatorText>{level}</LevelIndicatorText>

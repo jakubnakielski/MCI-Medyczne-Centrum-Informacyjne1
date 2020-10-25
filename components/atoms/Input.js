@@ -3,8 +3,8 @@ import { TextInput } from 'react-native';
 import styled from 'styled-components';
 
 const StyledTextInput = styled(TextInput)`
-    min-height: 150px;
-    padding: 0 8px;
+    min-height: 60px;
+    padding: 20px 8px;
     color: #fff;
     display: flex;
     text-align: justify;
