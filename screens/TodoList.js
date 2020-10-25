@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Text, View, TouchableOpacity, Keyboard, Animated, KeyboardAvoidingView, Image, TouchableWithoutFeedback } from 'react-native';
+import { Text, View, TouchableOpacity, Keyboard, Animated, KeyboardAvoidingView, Image, TouchableWithoutFeedback, SafeAreaView } from 'react-native';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import styled from 'styled-components';
 import io from 'socket.io-client';
@@ -19,7 +19,8 @@ const StyledView = styled(View)`
 `;
 const Container = styled(KeyboardAvoidingView)`
         width: 100%;
-        height: 80%;
+        height: 84%;
+        overflow: hidden;
         background: #fff;
         border-top-left-radius: 40px;
         border-top-right-radius: 40px;
@@ -37,7 +38,7 @@ const AddTaskButton = styled(AnimatedAddTaskButton)`
 const AddTaskButtonText = styled(Text)`
     color: white;
 `;
-const TasksList = styled(Animated.FlatList)`
+const MessageList = styled(Animated.FlatList)`
     margin-top: 20px;
     display: flex;
     flex-direction: column;
@@ -93,7 +94,7 @@ const TodoList = () => {
     useFocusEffect(() => {
         const userID = store.getState().userID || null;
         console.log(userID);
-        // socket.emit('add', userID);
+        // socket.emit('chat', userID);
     });
 
     useEffect(() => {
@@ -127,15 +128,15 @@ const TodoList = () => {
                 />
             </Header>
             <Container behavior='padding'>
-                <TasksList
+                <MessageList
                     data={tasks}
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item, index }) => {
                         return (
                             <Message
-                                task={item}
+                                message={item}
                                 key={index}
-                                isMyMessage={index % 2 ? true : false} //{owner == 'Ja' ? true : false}
+                                isMyMessage={item.user === "Ja" ? true : false}
                             />
                         )
                     }}
@@ -154,7 +155,7 @@ const TodoList = () => {
                         placeholderTextColor="#FFF"
                         value={inputContent}
                         onChangeText={setInputContent}
-                        onSubmitEditing={addTask}
+                        onSubmitEditing={(event) => addTask(event.nativeEvent.text)}
                     />
                     <StyledTouchableOpacity onPress={addTask}>
                         <Image

@@ -5,7 +5,7 @@ import {
 } from '../actions';
 
 const initialState = {
-    loading: false,
+    isLoading: false,
     error: '',
 };
 
@@ -15,18 +15,18 @@ const rootReducer = (state = initialState, action) => {
         case AUTH_REQUEST:
             return {
                 ...state,
-                loading: true,
+                isLoading: true,
             }
         case AUTH_SUCCESS:
             return {
                 ...state,
-                loading: false,
+                isLoading: false,
                 userID: action.payload.data._id,
             }
         case AUTH_FAILURE:
             return {
                 ...state,
-                loading: false,
+                isLoading: false,
                 error: action.payload,
             }
 
@@ -34,18 +34,18 @@ const rootReducer = (state = initialState, action) => {
         case LOGOUT_REQUEST:
             return {
                 ...state,
-                loading: true,
+                isLoading: true,
             }
         case LOGOUT_SUCCESS:
             return {
                 ...state,
-                loading: false,
+                isLoading: false,
                 userID: null,
             }
         case LOGOUT_FAILURE:
             return {
                 ...state,
-                loading: false,
+                isLoading: false,
                 error: action.payload,
             }
 
@@ -53,17 +53,17 @@ const rootReducer = (state = initialState, action) => {
         case REGISTER_REQUEST:
             return {
                 ...state,
-                loading: true,
+                isLoading: true,
             }
         case REGISTER_SUCCESS:
             return {
                 ...state,
-                loading: false,
+                isLoading: false,
             }
         case REGISTER_FAILURE:
             return {
                 ...state,
-                loading: false,
+                isLoading: false,
                 error: action.payload,
             }
 

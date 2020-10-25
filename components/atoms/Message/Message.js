@@ -4,9 +4,9 @@ import styled, { css } from 'styled-components';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const Wrapper = styled(View)`
-    width: 90%;
+    min-width: 80px;
     min-height: 60px;
-    margin: 20px 0;
+    margin: 15px 0;
     margin-right: auto;
     align-items: center;
     justify-content: center;
@@ -38,8 +38,7 @@ const Author = styled(Text)`
     color: grey;
 `;
 
-const Message = ({ task, ...props }) => (
-
+const Message = ({ message, ...props }) => (
     <Wrapper
         as={LinearGradient}
         colors={['#F5B346', '#FA7D8E']}
@@ -47,8 +46,8 @@ const Message = ({ task, ...props }) => (
         end={{ x: 1, y: 1 }}
         {...props}
     >
-        <Author>{task.user}</Author>
-        <MessageContent>{task.content}</MessageContent>
+        <Author>{message.user}</Author>
+        <MessageContent>{message.content}</MessageContent>
     </Wrapper>
 
 );
