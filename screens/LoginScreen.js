@@ -55,7 +55,8 @@ const LoginScreen = ({ authenticate, logout, userID }) => {
 
                     if (userID) {
                         // navigate('Chat');
-                        return <TabNavigator />
+
+                        // return <TabNavigator />
                     }
 
                     return (
